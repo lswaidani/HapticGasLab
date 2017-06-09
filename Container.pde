@@ -59,6 +59,8 @@ class Container {
     cylinder.setFriction(0.0);
     cylinder.setDamping(0.0);
     cylinder.setFill(0, 102, 153);
+    cylinder.setGrabbable(false);
+
     
     world.add(cylinder); 
     return cylinder;
@@ -77,14 +79,17 @@ class Container {
     //Physical properties
     piston.setPosition(xPos, yPos+1);
     piston.setRotatable(false);
-    piston.setRestitution(1.0);
+    piston.setRestitution(0.80);
     piston.setFriction(0.0);
-    piston.setDamping(0.0);
-    piston.setDensity(1);
+    piston.setDamping(20.0);
+    piston.setDensity(0.5);
     piston.setFill(200, 102, 153);
     piston.setHapticStiffness(10.0);
     piston.setHapticDamping(0.0);
     pistonHeight = piston.getY()-yPos;
+    if (isHapticSimulation){
+      piston.setGrabbable(false);
+    }
     world.add(piston); 
 
     return piston;

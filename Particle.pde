@@ -10,13 +10,13 @@ class Particle implements Gas {
   private float     velX;
   private float     velY;
   private float     velMag;
-  private float     kineticTemp;
+  //private float     kineticTemp;
   
   
   // Constructor creates particle at (xPos, YPos)
   Particle(float xPos, float yPos, float temp) {
     
-    kineticTemp = temp;
+    //kineticTemp = temp;
     
     // Randomise velocity vector direction
     velX = random(-1,1);
@@ -30,45 +30,45 @@ class Particle implements Gas {
     
     // Configure particle body in Fisica
     particleBody = new FCircle(0.3);
-    particleBody.setDensity(10);
+    particleBody.setDensity(20);
     particleBody.setBullet(true);
     particleBody.setRotatable(false);
     particleBody.setRestitution(1.0);
     particleBody.setFriction(0.0);
     particleBody.setDamping(0.0);
     particleBody.setHaptic(false);
-    particleBody.setFill(random(255),random(255),random(255));
+    particleBody.setFill((0),random(255),(0));
     particleBody.setPosition(xPos, yPos);
     particleBody.setVelocity(velX,velY);
+    particleBody.setGrabbable(false);
     
     world.add(particleBody); 
   }
   
   
-  void UpdateVelocity() {
+  void UpdateProperties() {
     velX = particleBody.getVelocityX();
     velY = particleBody.getVelocityY();
     velMag = mag(velX,velY);
-    println(velMag);
-    kineticTemp = CalculateKineticTemp();
+    //kineticTemp = CalculateKineticTemp();
   }
   
   
-  void AdjustVelocity (float tempAdjust) {
-    // If particle is at rest randomise direction
-    /*if (velMag == 0) {
-      velX = random(-1,1);
-      velY = random(-1,1);
-      velMag = mag(velX,velY);
-    }*/
+  //void AdjustVelocity (float tempAdjust) {
+  //  // If particle is at rest randomise direction
+  //  /*if (velMag == 0) {
+  //    velX = random(-1,1);
+  //    velY = random(-1,1);
+  //    velMag = mag(velX,velY);
+  //  }*/
     
-    // Calculate the velocity adjustment according to kinetic-temp
-    float vNew = CalculateVelocityFromTemp(kineticTemp+tempAdjust);
-    // set/adjust velocity
-    velX = velX*vNew/velMag-velX;
-    velY = velY*vNew/velMag-velY;
-    particleBody.addImpulse(velX*particleBody.getMass()*10, velY*particleBody.getMass()*10);
-  }
+  //  // Calculate the velocity adjustment according to kinetic-temp
+  //  //float vNew = CalculateVelocityFromTemp(kineticTemp+tempAdjust);
+  //  // set/adjust velocity
+  //  velX = velX*vNew/velMag-velX;
+  //  velY = velY*vNew/velMag-velY;
+  //  particleBody.addImpulse(velX*particleBody.getMass()*10, velY*particleBody.getMass()*10);
+  //}
   
 
   // Kinetic-Temperature Equations
@@ -78,7 +78,7 @@ class Particle implements Gas {
   
   // Access private variables
   float GetVelocity() { return velMag; }
-  float GetTemperature() { return kineticTemp; }
+  //float GetTemperature() { return kineticTemp; }
 
 
   void Destroy() {

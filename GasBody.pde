@@ -12,7 +12,7 @@ class GasBody implements Gas {
   private float                temperature;
   private float                volume;
   private float                moles;
-  private float                molarMass;
+  //private float                molarMass;
   private ArrayList<Particle>  Particles               = new ArrayList<Particle> ();
   private int                  N; // number of particles
   
@@ -44,23 +44,23 @@ class GasBody implements Gas {
   void Update(float vol) {
     volume = vol;
     actualTemp = MeasureKineticTemperature();
-    float error = temperature-actualTemp;
-    for (Particle p: Particles) {
-     // p.AdjustVelocity(error);
-    }
+    //float error = temperature-actualTemp;
+    //for (Particle p: Particles) {
+      //p.AdjustVelocity(error);
+    //}
     pressure = CalculatePressure();
     
   }
   
   
   float MeasureKineticTemperature() {
-    float meanVel = 0;
+    float meanTemp = 0;
     for (Particle p: Particles) {
-      p.UpdateVelocity();
-      meanVel =+ p.GetVelocity();
+      p.UpdateProperties();
+      meanTemp = meanTemp + p.GetVelocity();
     }
-    meanVel = meanVel/N;
-    return pow(meanVel/vScale,2)*M/(3*R);  // Calculate kinetic temperature according to current particle velocity
+    meanTemp = meanTemp/N;
+    return pow(meanTemp/vScale,2)*M/(3*R);  // Calculate kinetic temperature according to current particle velocity
   }
 
 
@@ -68,6 +68,11 @@ class GasBody implements Gas {
     return moles*R*temperature/volume;
   }
   
+  void SetParticleRestitution(float r) {
+    for (Particle p: Particles) {
+      p.particleBody.setRestitution(r);
+    }
+  }
   
   // External access of private variables
   float GetVolume() { return volume; }
@@ -79,7 +84,7 @@ class GasBody implements Gas {
   void SetPressure(float pres) { pressure = pres; }
   void SetVolume(float vol) { volume = vol; }
   void SetMoles(float n) { moles = n; }
-  void SetMolarMass(float mass) { molarMass = mass; }
+  //void SetMolarMass(float mass) { molarMass = mass; }
   void SetTemperature(float temp) { temperature = temp; }
   
   
