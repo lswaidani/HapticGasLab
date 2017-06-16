@@ -1,6 +1,6 @@
 // Display settings
-final int         displayWidth          = 1600;
-final int         displayHeight         = 900;
+final int         displayWidth          = 1920;
+final int         displayHeight         = 1080;
 final float       ppcm                  = 55.66/900*1080; // this is the resolution of the screen divided by the number of centimeters 
 
 // World setup parameters
@@ -8,10 +8,10 @@ FWorld            world;
 boolean           isPlaying             = false;
 boolean           isHapticSimulation    = true;
 
-final float       worldWidth            = (displayWidth/2)/ppcm;  
+final float       worldWidth            = (displayWidth/2)/ppcm;  // world size
 final float       worldHeight           = (displayHeight)/ppcm;  
 
-float             edgeTopLeftX          = 0.0; 
+float             edgeTopLeftX          = 0.0;                    // edges of the world
 float             edgeTopLeftY          = 0.0; 
 float             edgeBottomRightX      = worldWidth; 
 float             edgeBottomRightY      = worldHeight; 
@@ -19,15 +19,18 @@ float             edgeBottomRightY      = worldHeight;
 // World object parameters
 HVirtualCoupling  s; 
 PImage            haply_avatar;
-final float       xEE0 = worldWidth/2;
-final float       yEE0 = 0.6;
+final float       xEE0                  = worldWidth/2;  // Where the end effector starts
+final float       yEE0                  = 0.6;
 
 FCompound         sc;
 Container         GasCylinder;
 GasBody           Gas;
-static int        numberOfParticles     = 50;
+static int        numberOfParticles     = 70;
 float             initialTemp           = 293;
-float             restitution = 1;
+float             restitution           = 1;
+PImage            particleImage; 
+PImage            cylinderImage; 
+PImage            pistonImage;
 
 // Haptic device definitions
 Device            haply_2DOF;

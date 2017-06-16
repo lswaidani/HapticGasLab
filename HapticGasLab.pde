@@ -8,13 +8,15 @@ import com.dhchoi.CountdownTimerService;
 void setup() {
   //size(displayWidth, displayHeight, P2D); 
   fullScreen();
-  InitialiseHapticDevice();
+  if (InitialiseHapticDevice()) {
+    isHapticSimulation=true;
+  }
   InitialiseWorld();
   InitialiseHapticTimer();
   isPlaying = true;
   //Pulse pulse = new Pulse(this);
   //pulse.play();
-  frameRate(60);
+  frameRate(30);
 }
 
 
@@ -22,18 +24,18 @@ void setup() {
 void draw() {
   if (isPlaying == true) {
     background(255); 
-        UpdateBunsen();
+    UpdateBunsen();
     world.draw();
-        // GUI update
+    
+    // GUI update at multiple of frame rate
     if (guiCount>1) {
       guiCount--;
     } 
     else {
-      guiCount = 50;
+      guiCount = 5;
     }
+    
     DrawGUI();
-
-    //world.drawDebug();
   }
 }
 
@@ -63,7 +65,7 @@ void onTickEvent(CountdownTimer t, long timeLeftUntilFinish) {
   
     f_ee.set(-s.getVCforceX(), s.getVCforceY());
   
-    f_ee.div(9000); 
+    f_ee.div(12000); 
     haply_2DOF.set_device_torques(f_ee.array());
     torques.set(haply_2DOF.mechanisms.get_torque());
     haply_2DOF.device_write_torques();

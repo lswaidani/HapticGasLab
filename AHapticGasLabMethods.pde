@@ -1,36 +1,52 @@
-void InitialiseHapticDevice() {
-  if (isHapticSimulation == true) {
+// AHapticGasLabMethods.pde
+
+// This sketch contatins all the methods for the main program
+
+
+// Looks for a serial device and tries to set it up as a Haptic device
+// returns true if successful.
+boolean InitialiseHapticDevice() {
+  if (Serial.list().length == 0) {
+    return false;
+  }
+  else {
     haply_board = new Board(this, Serial.list()[0], 0);
     haply_2DOF = new Device(DeviceType.HaplyTwoDOF, deviceID, haply_board);
+    return true;
   }
 }
 
 
+// Creates an instance of the world and its contents and initialises all properties
 void InitialiseWorld() {
-  // Initialise Fisica engine
-  hAPI_Fisica.init(this); 
-  hAPI_Fisica.setScale(ppcm); 
+
+  hAPI_Fisica.init(this);               // Initialise Fisica engine
+  hAPI_Fisica.setScale(ppcm);     
   world = new FWorld();
   world.setGravity((0.0), (0.0));
-
-  GasCylinder = new Container(3.8, 2);
+  particleImage = loadImage("../img/particle.png");
+  particleImage.resize((int)(hAPI_Fisica.worldToScreen(0.4)), (int)(hAPI_Fisica.worldToScreen(0.4)));
+  cylinderImage = loadImage("../img/cylinder.png");
+  cylinderImage.resize((int)(hAPI_Fisica.worldToScreen(7)), (int)(hAPI_Fisica.worldToScreen(13)));
+  pistonImage = loadImage("../img/piston.png");
+  pistonImage.resize((int)(hAPI_Fisica.worldToScreen(6)), (int)(hAPI_Fisica.worldToScreen(.5)));
+    
+  GasCylinder = new Container(3.8+3.5, 2+6.5);  // Add a gas cylinder to the world
+  bunsen = CreateBunsen();              // Add a bunsen to the world
   
-  bunsen = CreateBunsen();
-  
-  // Setup the Virtual Coupling Contact Rendering Technique
-
-  s= new HVirtualCoupling(.5); 
+  s= new HVirtualCoupling(.5);          // Setup the Virtual Coupling Contact Rendering Technique
   s.h_avatar.setDensity(1); 
   s.h_avatar.setFill(255, 0, 0); 
   s.h_avatar.setDrawable(false);
   s.init(world, worldWidth/2, 0.6); 
+
   //haply_avatar = loadImage("../img/Haply_avatar.png"); 
   //haply_avatar.resize((int)(hAPI_Fisica.worldToScreen(1)), (int)(hAPI_Fisica.worldToScreen(1)));
   //s.h_avatar.attachImage(haply_avatar); 
 
-//sc = new FCompound(); 
-//sc.addBody(s.h_avatar);
-//sc.addBody(GasCylinder.Piston);
+  //sc = new FCompound(); 
+  //sc.addBody(s.h_avatar);
+  //sc.addBody(GasCylinder.Piston);
   world.draw();
 }
 
@@ -58,25 +74,14 @@ void keyPressed() {
   }
   else if (key == 'x') {
     // Temperature up
-    if (restitution>=1.5) {
-      restitution = 1.5;
-    }
-    else {
-      restitution = restitution + 0.01;
-      GasCylinder.Gas.SetParticleRestitution(restitution);
-      println("Bunsen burner: " + str(restitution));
-    }
+    float t = GasCylinder.Gas.GetTemperature() + 5;
+    GasCylinder.Gas.SetTemperature(t);
+    //println("Bunsen burner: " + str(restitution));
   }
   else if (key == 'z') {
     // Temperature down
-    if (restitution<=0.5) {
-      restitution = 0.5;
-    }
-    else {
-      restitution = restitution - 0.01;
-      GasCylinder.Gas.SetParticleRestitution(restitution);
-      println("Bunsen burner: " + str(restitution));
-    }
+    float t = GasCylinder.Gas.GetTemperature() - 5;
+    GasCylinder.Gas.SetTemperature(t);   
   }
 }
 

@@ -44,29 +44,30 @@ class GasBody implements Gas {
   void Update(float vol) {
     volume = vol;
     actualTemp = MeasureKineticTemperature();
-    //float error = temperature-actualTemp;
-    //for (Particle p: Particles) {
-      //p.AdjustVelocity(error);
-    //}
+    float error = actualTemp - temperature;
+    restitution = 1 - 0.01*error;
+    SetParticleRestitution(restitution);
     pressure = CalculatePressure();
     
   }
   
   
   float MeasureKineticTemperature() {
-    float meanTemp = 0;
+    float meanVel = 0;
     for (Particle p: Particles) {
-      p.UpdateProperties();
-      meanTemp = meanTemp + p.GetVelocity();
+      p.UpdateVelocity();
+      meanVel = meanVel + p.GetVelocity();
     }
-    meanTemp = meanTemp/N;
-    return pow(meanTemp/vScale,2)*M/(3*R);  // Calculate kinetic temperature according to current particle velocity
+    meanVel = meanVel/N;
+    return pow(meanVel/vScale,2)*M/(3*R);  // Calculate kinetic temperature according to current particle velocity
   }
 
-
+  
+  // Calculat the pressure reading according to PV=nRT
   float CalculatePressure() {
-    return moles*R*temperature/volume;
+    return moles*R*actualTemp/volume;
   }
+  
   
   void SetParticleRestitution(float r) {
     for (Particle p: Particles) {
