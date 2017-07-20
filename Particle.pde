@@ -21,8 +21,8 @@ class Particle implements Gas {
     velY = velY*velTarget/velMag;
     
     // Configure particle body in Fisica
-    particleBody = new FCircle(0.4);
-    particleBody.setDensity(30);
+    particleBody = new FCircle(0.2);
+    particleBody.setDensity(50);
     particleBody.setBullet(true);
     particleBody.setRotatable(false);
     particleBody.setRestitution(1.0);

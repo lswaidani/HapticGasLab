@@ -31,16 +31,16 @@ void DrawGUI(){
     textAlign(RIGHT);
     textSize(32);
     fill(0, 102, 153, 255);
-    float p = round(GasCylinder.Gas.GetPressure()/10);
-    float v = round(GasCylinder.Gas.GetVolume()*100000);
+    int p = round(GasCylinder.Gas.GetPressure()/1000);
+    int v = round(GasCylinder.Gas.GetVolume()*1000);
     int k = round(GasCylinder.Gas.GetTemperature());
     int ka = round(GasCylinder.Gas.GetTemperatureActual());
     float n = GasCylinder.Gas.GetMoles();
     
-    text(" " + str(p/100) , guiPos.x+2.5*ppcm, guiPos.y+2*ppcm );  
-    text(" " + str(v/100), guiPos.x+2.5*ppcm, guiPos.y+3*ppcm );
-    text(" " + str(ka), guiPos.x+2.5*ppcm, guiPos.y+4*ppcm );
-    text(" " + str(n), guiPos.x+2.5*ppcm, guiPos.y+5*ppcm );
+    text(" " + str(p) , guiPos.x+2.*ppcm, guiPos.y+2*ppcm );  
+    text(" " + str(v), guiPos.x+2.*ppcm, guiPos.y+3*ppcm );
+    text(" " + str(ka), guiPos.x+2.*ppcm, guiPos.y+4*ppcm );
+    text(" " + str(n), guiPos.x+2.*ppcm, guiPos.y+5*ppcm );
     textAlign(LEFT);
     textSize(36);
     text("-    PV = nRT", guiPos.x+0.6*ppcm, guiPos.y+9*ppcm );
@@ -49,10 +49,10 @@ void DrawGUI(){
     // Unit labels
     textSize(32);
     textAlign(LEFT);
-    text(" kPa" , guiPos.x+2.5*ppcm, guiPos.y+2*ppcm );
-    text(" m   x10", guiPos.x+2.5*ppcm, guiPos.y+3*ppcm );
-    text(" K   (" +str(k)+" K)", guiPos.x+2.5*ppcm, guiPos.y+4*ppcm );
-    text(" mol", guiPos.x+2.5*ppcm, guiPos.y+5*ppcm );
+    text(" kPa" , guiPos.x+2.*ppcm, guiPos.y+2*ppcm );
+    text(" m   x10", guiPos.x+2.*ppcm, guiPos.y+3*ppcm );
+    text(" K   (" +str(k)+" K)", guiPos.x+2.*ppcm, guiPos.y+4*ppcm );
+    text(" mol", guiPos.x+2.*ppcm, guiPos.y+5*ppcm );
     
     //bunsen text
     fill(0,0,0);
@@ -64,7 +64,7 @@ void DrawGUI(){
     // Add superscript
     textSize(20);
     fill(0, 102, 153, 255);
-    text("3            -3", guiPos.x+3.2*ppcm, guiPos.y+2.75*ppcm );
+    text("3            -3", guiPos.x+2.7*ppcm, guiPos.y+2.75*ppcm );
     text("2", guiPos.x+3.05*ppcm, guiPos.y+9.7*ppcm );
     
     //float ka = round(GasCylinder.Gas.GetTemperatureActual()*100);

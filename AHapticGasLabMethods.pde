@@ -25,17 +25,16 @@ void InitialiseWorld() {
   world = new FWorld();
   world.setGravity((0.0), (0.0));
   particleImage = loadImage("../img/particle.png");
-  particleImage.resize((int)(hAPI_Fisica.worldToScreen(0.4)), (int)(hAPI_Fisica.worldToScreen(0.4)));
+  particleImage.resize((int)(hAPI_Fisica.worldToScreen(0.2)), (int)(hAPI_Fisica.worldToScreen(0.2)));
   cylinderImage = loadImage("../img/cylinder.png");
-  cylinderImage.resize((int)(hAPI_Fisica.worldToScreen(7)), (int)(hAPI_Fisica.worldToScreen(13)));
+  cylinderImage.resize((int)(hAPI_Fisica.worldToScreen(6)), (int)(hAPI_Fisica.worldToScreen(13)));
   pistonImage = loadImage("../img/piston.png");
-  pistonImage.resize((int)(hAPI_Fisica.worldToScreen(6)), (int)(hAPI_Fisica.worldToScreen(.5)));
+  pistonImage.resize((int)(hAPI_Fisica.worldToScreen(5)), (int)(hAPI_Fisica.worldToScreen(.5)));
     
   GasCylinder = new Container(3.8+3.5, 2+6.5);  // Add a gas cylinder to the world
-  bunsen = CreateBunsen();              // Add a bunsen to the world
   
   s= new HVirtualCoupling(.5);          // Setup the Virtual Coupling Contact Rendering Technique
-  s.h_avatar.setDensity(1); 
+  s.h_avatar.setDensity(5); 
   s.h_avatar.setFill(255, 0, 0); 
   s.h_avatar.setDrawable(false);
   s.init(world, worldWidth/2, 0.6); 
@@ -69,14 +68,13 @@ void keyPressed() {
     }
     else {
       isPlaying = true;
-      println("Unpuased");
+      println("Unpaused");
     }
   }
   else if (key == 'x') {
     // Temperature up
     float t = GasCylinder.Gas.GetTemperature() + 5;
     GasCylinder.Gas.SetTemperature(t);
-    //println("Bunsen burner: " + str(restitution));
   }
   else if (key == 'z') {
     // Temperature down
@@ -90,6 +88,7 @@ void keyPressed() {
 void InitialiseHapticTimer() { 
   haptic_timer = CountdownTimerService.getNewCountdownTimer(this).configure(SIMULATION_PERIOD, HOUR_IN_MILLIS).start();
 }
+
 
 void onFinishEvent(CountdownTimer t) {
   println("Resetting timer...");

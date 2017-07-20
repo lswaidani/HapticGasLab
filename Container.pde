@@ -5,20 +5,19 @@ class Container {
   
   // Container parameters 
   static final float  cHeight       = 13;
-  static final float  cWidth        = 7;
-  final float       thick         = .5;
-  final float       xPos, yPos;
-  final PVector     topLeft;
-  final PVector     bottomRight;
+  static final float  cWidth        = 6;
+  final float         thick         = .5;
+  final float         xPos, yPos;
+  final PVector       topLeft;
+  final PVector       bottomRight;
   
-  float             volume;
-  float             pistonHeight;
+  float               volume;
+  float               pistonHeight;
   
-  // Physical components
+  // Physics engine components
   FPoly             Cylinder;
   FPoly             Piston;
-  
-  // GasBody object
+  FBox              Bunsen;
   GasBody           Gas;
   
   
@@ -31,13 +30,13 @@ class Container {
     bottomRight = new PVector(x+cWidth/2-2*thick,y+cHeight/2-2*thick);
     volume = CalculateVolume();
     Gas = CreateGas(); //<>//
+    Bunsen = CreateBunsen();
   }
   
   
   // Create the cylinder component
   FPoly CreateCylinder() {
     FPoly cylinder = new FPoly();
-    
     
      // Vertex geometry
     cylinder.vertex(-cWidth/2,         -cHeight/2);        //1
@@ -53,22 +52,6 @@ class Container {
     cylinder.vertex(-cWidth/2+thick,     -cHeight/2+thick);  //10
     cylinder.vertex(-cWidth/2+2*thick,   -cHeight/2+thick);  //11
     cylinder.vertex(-cWidth/2+2*thick,   -cHeight/2);        //12
-
-    
-    
-    // Vertex geometry
-    //cylinder.vertex(0,               -thick);
-    //cylinder.vertex(0,               cHeight);
-    //cylinder.vertex(cWidth,          cHeight);
-    //cylinder.vertex(cWidth,          -thick);
-    //cylinder.vertex(cWidth-2*thick,  -thick);
-    //cylinder.vertex(cWidth-2*thick,  0);
-    //cylinder.vertex(cWidth-thick,    0);
-    //cylinder.vertex(cWidth-thick,    0+cHeight-thick);
-    //cylinder.vertex(thick,           0+cHeight-thick);
-    //cylinder.vertex(thick,           0);
-    //cylinder.vertex(2*thick,         0);
-    //cylinder.vertex(2*thick,         -thick);
 
     // Physical properties
     cylinder.setPosition(xPos, yPos);
@@ -97,14 +80,14 @@ class Container {
     //Physical properties
     piston.setPosition(xPos, yPos-cHeight/2+2*thick);
     piston.setRotatable(false);
-    piston.setRestitution(0.9);
+    piston.setRestitution(1);
     piston.setFriction(0.0);
     piston.setDamping(15.0);
     piston.setDensity(0.5);
     //piston.setFill(0, 102, 153,100);
     piston.attachImage(pistonImage);
     
-    piston.setHapticStiffness(5.0);
+    piston.setHapticStiffness(50.0);
     piston.setHapticDamping(0.1);
     pistonHeight = piston.getY()-yPos;
     if (isHapticSimulation){
@@ -131,6 +114,30 @@ class Container {
     Gas.Update(volume);
   }
   
+
+FBox CreateBunsen() {
+  FBox bunsen = new FBox(7,.8);
+  
+  bunsen.setPosition(3.8+3.5, 15.5);
+  bunsen.setStatic(true);
+  bunsen.setFill(100,100,100);
+  
+  world.addBody(bunsen);
+  return bunsen;
+}
+
+void UpdateBunsen() {
+  int r;
+  int g;
+  int b;
+  //if (restitution <= 1) {
+    r = 100 + int((restitution-1)*500);
+    g = 100 - int((restitution-1)*500)/2;
+    b = 100 - int((restitution-1)*500)/2;
+    Bunsen.setFill(r,g,b);
+
+  
+}
   
   float CalculateVolume() {
       return (0.8-(pistonHeight*0.8/12))*PI*pow(0.2, 2);

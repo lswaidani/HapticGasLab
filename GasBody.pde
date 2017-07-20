@@ -5,16 +5,19 @@ Must be called by a Container object
 class GasBody implements Gas {
   
   private PVector              topLeft, bottomRight;
+  private float                kpTemp                = 0.0005;
+  //private float                kiTemp                = 0.0001;
+  //private float                kdTemp                = 0;
+  //private float                integTemp             = 0;
   
   // Gas properties
-  private float                actualTemp = 0;
+  private float                actualTemp;
   private float                pressure;
   private float                temperature;
   private float                volume;
   private float                moles;
-  //private float                molarMass;
-  private ArrayList<Particle>  Particles               = new ArrayList<Particle> ();
-  private int                  N; // number of particles
+  private ArrayList<Particle>  Particles             = new ArrayList<Particle> ();
+  private int                  N;                                                   // number of particles
   
   
   GasBody(float vol, int n, float temp, PVector containTopLeft, PVector containBottomRight) {
@@ -30,6 +33,7 @@ class GasBody implements Gas {
       Particle p = CreateParticle();
       Particles.add(p);
     }
+    actualTemp = MeasureKineticTemperature();
   }
   
   
@@ -43,9 +47,12 @@ class GasBody implements Gas {
   // Update the physical properties of the gas and correct energy loss by adjusting velocity of particles
   void Update(float vol) {
     volume = vol;
+    //float dTemp = actualTemp;
     actualTemp = MeasureKineticTemperature();
-    float error = actualTemp - temperature;
-    restitution = 1 - 0.01*error;
+    float error = temperature - actualTemp;
+    //dTemp = (dTemp+actualTemp)/2;
+    //integTemp = integTemp + error*0.001;
+    restitution = (kpTemp*error) + 1;
     SetParticleRestitution(restitution);
     pressure = CalculatePressure();
     

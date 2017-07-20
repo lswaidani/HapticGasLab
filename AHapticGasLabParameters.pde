@@ -25,9 +25,11 @@ final float       yEE0                  = 0.6;
 FCompound         sc;
 Container         GasCylinder;
 GasBody           Gas;
-static int        numberOfParticles     = 70;
+static int        numberOfParticles     = 200;
 float             initialTemp           = 293;
 float             restitution           = 1;
+
+// Image files
 PImage            particleImage; 
 PImage            cylinderImage; 
 PImage            pistonImage;

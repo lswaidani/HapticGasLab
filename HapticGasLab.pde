@@ -16,7 +16,7 @@ void setup() {
   isPlaying = true;
   //Pulse pulse = new Pulse(this);
   //pulse.play();
-  frameRate(30);
+  frameRate(60);
 }
 
 
@@ -24,7 +24,7 @@ void setup() {
 void draw() {
   if (isPlaying == true) {
     background(255); 
-    UpdateBunsen();
+    GasCylinder.UpdateBunsen();
     world.draw();
     
     // GUI update at multiple of frame rate
@@ -48,7 +48,7 @@ void onTickEvent(CountdownTimer t, long timeLeftUntilFinish) {
     // World update
     GasCylinder.Update();
     GasCylinder.Piston.addForce(0,-GasCylinder.pistonHeight*1000);
-    world.step(1.0f/1000.0f,10);
+    world.step(1.0f/1000.0f,1);
   }
   
   // If Haply is connected then perfrom haptic commands
